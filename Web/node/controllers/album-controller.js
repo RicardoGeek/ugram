@@ -2,7 +2,7 @@ var AWS = require('aws-sdk');
 var aws_keys = require('../config/creeds.js');
 
 
-const dynamo = new AWS.DynamoDB(aws_keys.dynamodb);
+const dynamo = new AWS.DynamoDB.DocumentClient(aws_keys.dynamodb);
 
 exports.createAlbum = async (req, res) => {
     let body = req.body;
@@ -15,18 +15,12 @@ exports.createAlbum = async (req, res) => {
             'errors': errors
         })
     } else {
-        dynamo.putItem({
+        dynamo.put({
             TableName: 'albumes',
             Item: {
-                'id_album': {
-                    S: body.id_album
-                },
-                'album_name': {
-                    S: body.album_name
-                },
-                'user_name': {
-                    S: body.user_name
-                }
+                'id_album': body.id_album,
+                'album_name': body.album_name,
+                'user_name': body.user_name
             }
         }, (err, data) => {
             if (err) {
@@ -76,14 +70,12 @@ exports.getUserAlbum = async (req, res) => {
         TableName: "albumes",
         FilterExpression: "user_name = :ip",
         ExpressionAttributeValues: {
-            ":ip": {
-                S: user
-            }
+            ":ip": user
         }
-        
+
     }
 
-    dynamo.scan(params, (err,data) => {
+    dynamo.scan(params, (err, data) => {
         if (err) {
             res.status(500).send({
                 'status': 'error',
@@ -104,22 +96,18 @@ exports.updateAlbum = async (req, res) => {
     let params = {
         TableName: 'albumes',
         Key: {
-            'id_album': {
-                S: req.params.id_album
-            }
+            'id_album': req.params.id_album
         },
         UpdateExpression: 'set album_name=:an',
         ConditionExpression: 'attribute_exists(id_album)',
         ExpressionAttributeValues: {
-            ':an': {
-                S: body.album_name
-            }
-            
+            ':an': body.album_name
+
         },
         ReturnValues: "UPDATED_NEW"
     }
 
-    dynamo.updateItem(params, (err, data) => {
+    dynamo.update(params, (err, data) => {
         if (err) {
             res.status(500).send({
                 'status': 'error',
@@ -138,17 +126,17 @@ exports.deleteAlbum = async (req, res) => {
     let album = req.params.id_album;
 
     params = {
-        TableName:'albumes',
-        Key:{
-            "id_album": {S: album}
+        TableName: 'albumes',
+        Key: {
+            "id_album": album
         },
-        ConditionExpression:"id_album = :ia",
+        ConditionExpression: "id_album = :ia",
         ExpressionAttributeValues: {
-            ":ia": {S: album}
+            ":ia": album
         }
     };
 
-    dynamo.deleteItem(params, (err,data)=>{
+    dynamo.delete(params, (err, data) => {
         if (err) {
             res.status(500).send({
                 'status': 'error',

@@ -2,29 +2,19 @@ var AWS = require('aws-sdk');
 var aws_keys = require('../config/creeds.js');
 
 
-const dynamo = new AWS.DynamoDB(aws_keys.dynamodb);
+const dynamo = new AWS.DynamoDB.DocumentClient(aws_keys.dynamodb);
 
 exports.createPhoto = async (req, res) => {
     let body = req.body;
 
-    dynamo.putItem({
+    dynamo.put({
         TableName: 'photos',
         Item: {
-            'id_album': {
-                S: body.id_album
-            },
-            'caption': {
-                S: body.caption
-            },
-            'id_photo': {
-                S: body.id_photo
-            },
-            'id_user': {
-                S: body.id_user
-            },
-            'url': {
-                S: body.url
-            }
+            'id_album': body.id_album,
+            'caption': body.caption,
+            'id_photo': body.id_photo,
+            'id_user': body.id_user,
+            'url': body.url
         }
     }, (err, data) => {
         if (err) {
@@ -48,20 +38,14 @@ exports.updatePhoto = async (req, res) => {
     let params = {
         TableName: 'photos',
         Key: {
-            'id_photo': {
-                S: req.params.id_photo
-            }
+            'id_photo': req.params.id_photo
         },
         UpdateExpression: 'set caption=:c, #url=:u',
         ConditionExpression: 'attribute_exists(id_photo)',
         ExpressionAttributeValues: {
-            ':c': {
-                S: body.caption
-            },
-            ':u': {
-                S: body.url
-            }
-            
+            ':c': body.caption,
+            ':u': body.url
+
         },
         ExpressionAttributeNames: {
             "#url": "url"
@@ -69,7 +53,7 @@ exports.updatePhoto = async (req, res) => {
         ReturnValues: "UPDATED_NEW"
     }
 
-    dynamo.updateItem(params, (err, data) => {
+    dynamo.update(params, (err, data) => {
         if (err) {
             res.status(500).send({
                 'status': 'error',
@@ -91,14 +75,12 @@ exports.getUserPhotos = async (req, res) => {
         TableName: "photos",
         FilterExpression: "id_user = :ip",
         ExpressionAttributeValues: {
-            ":ip": {
-                S: user
-            }
+            ":ip": user
         }
-        
+
     }
 
-    dynamo.scan(params, (err,data) => {
+    dynamo.scan(params, (err, data) => {
         if (err) {
             res.status(500).send({
                 'status': 'error',
@@ -121,17 +103,13 @@ exports.getUserPhotosByAlbum = async (req, res) => {
         TableName: "photos",
         FilterExpression: "id_user = :ip and id_album = :ia",
         ExpressionAttributeValues: {
-            ":ip": {
-                S: user
-            },
-            ":ia": {
-                S: album
-            }
+            ":ip": user,
+            ":ia": album
         }
-        
+
     }
 
-    dynamo.scan(params, (err,data) => {
+    dynamo.scan(params, (err, data) => {
         if (err) {
             res.status(500).send({
                 'status': 'error',
@@ -153,17 +131,17 @@ exports.deletePhoto = async (req, res) => {
     let photo = req.params.id_photo;
 
     params = {
-        TableName:'photos',
-        Key:{
-            "id_photo": {S: photo}
+        TableName: 'photos',
+        Key: {
+            "id_photo": photo
         },
-        ConditionExpression:"id_photo = :ip",
+        ConditionExpression: "id_photo = :ip",
         ExpressionAttributeValues: {
-            ":ip": {S: photo}
+            ":ip": photo
         }
     };
 
-    dynamo.deleteItem(params, (err,data)=>{
+    dynamo.delete(params, (err, data) => {
         if (err) {
             res.status(500).send({
                 'status': 'error',

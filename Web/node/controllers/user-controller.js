@@ -3,7 +3,7 @@ var aws_keys = require('../config/creeds.js');
 var bcrypt = require('bcrypt');
 
 
-const dynamo = new AWS.DynamoDB(aws_keys.dynamodb);
+const dynamo = new AWS.DynamoDB.DocumentClient(aws_keys.dynamodb);
 
 
 exports.createUser = async (req, res) => {
@@ -19,18 +19,12 @@ exports.createUser = async (req, res) => {
         })
     } else {
 
-        dynamo.putItem({
+        dynamo.put({
             TableName: 'users',
             Item: {
-                'user_name': {
-                    S: body.user_name
-                },
-                'fullname': {
-                    S: body.fullname
-                },
-                'password': {
-                    S: bcrypt.hashSync(body.password, 10)
-                }
+                'user_name': body.user_name,
+                'fullname': body.fullname,
+                'password': bcrypt.hashSync(body.password, 10)
             }
         }, (err, data) => {
             if (err) {
@@ -76,14 +70,12 @@ let validate = async (body) => {
 
         params = {
             Key: {
-                "user_name": {
-                    S: body.user_name
-                }
+                "user_name": body.user_name
             },
             TableName: "users"
         }
 
-        let find = await dynamo.getItem(params).promise().then(data => {
+        let find = await dynamo.get(params).promise().then(data => {
             if (data.Item) {
                 listErrors.push('Ese nombre de usuario ya esta en uso');
             }
@@ -112,15 +104,15 @@ let validate = async (body) => {
 exports.getUser = async (req, res) => {
     params = {
         Key: {
-            "user_name": {
-                S: req.params.user_name
-            }
+            "user_name": req.params.user_name
         },
         TableName: "users"
     }
-    dynamo.getItem(params).promise().then(data => {
+    dynamo.get(params).promise().then(data => {
         if (data.Item) {
-            res.status(200).send(data.Item);
+            res.status(200).send(
+                data.Item
+            );
         } else {
             res.status(404).send({
                 'status': 'error',
@@ -149,23 +141,17 @@ exports.updateUser = async (req, res) => {
         let params = {
             TableName: 'users',
             Key: {
-                'user_name': {
-                    S: req.params.user_name
-                }
+                'user_name': req.params.user_name
             },
             UpdateExpression: 'set fullname=:fn, password=:p',
             ConditionExpression: 'attribute_exists(user_name)',
             ExpressionAttributeValues: {
-                ':fn': {
-                    S: body.fullname
-                },
-                ':p': {
-                    S: body.password
-                }
+                ':fn': body.fullname,
+                ':p': body.password
             },
             ReturnValues: "UPDATED_NEW"
         }
-        dynamo.updateItem(params, (err, data) => {
+        dynamo.update(params, (err, data) => {
             if (err) {
                 res.status(500).send({
                     'status': 'error',
@@ -188,9 +174,7 @@ exports.authUser = async (req, res) => {
         TableName: "users",
         FilterExpression: "user_name = :ip",
         ExpressionAttributeValues: {
-            ":ip": {
-                S: user
-            }
+            ":ip": user
         }
 
     }
@@ -203,7 +187,7 @@ exports.authUser = async (req, res) => {
             })
         } else {
             if (data.Items.length > 0) {
-                let pass = data.Items[0].password.S;
+                let pass = data.Items[0].password;
                 if (bcrypt.compareSync(password, pass)) {
                     res.status(200).send({
                         'status': 'success',
