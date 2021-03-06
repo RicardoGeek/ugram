@@ -71,3 +71,24 @@ def updateUser(user_name):
         'status': 'success',
         'message': updatedResult['Attributes']
     }, 200
+
+@app.route('/auth', methods=['POST'])
+def authUser():
+    request.get_json(force = True)
+    data = request.json
+
+    username = data['username']
+    password = data['password']
+
+    user = user_helper.user_auth(username, password)
+
+    if not user:
+        return {
+            'status': 'error',
+            'message': 'Unauthorized'
+        }, 401
+    
+    return {
+        'status': 'success',
+        'message': user
+    }, 200

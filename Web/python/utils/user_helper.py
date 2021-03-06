@@ -71,9 +71,15 @@ def updateUser(user_name, fullname, password):
 
     return updateResult
 
+def user_auth(user_name, password):
+    table = dynamodb.Table('users')
+    allUsers = table.scan()
+    filteredUser = seekUser(user_name, password, allUsers)
+    
+    return filteredUser
+
 # METODOS PRIVADOS (not really)
 def filterUser(user_name, userData):
-    print(userData)
     data = userData['Items']
     for user in data:
         if user_name == user['user_name']:
@@ -86,3 +92,10 @@ def isUnique(user_name, users):
         if user_name == user['user_name']:
             return False
     return True
+
+def seekUser(user_name, password, userData):
+    data = userData['Items']
+    for user in data:
+        if user_name == user['user'] and password == user['password']:
+            return user
+    return None
