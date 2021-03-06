@@ -99,6 +99,6 @@ def seekUser(user_name, password, userData):
     hashed = bcrypt.hashpw(password, bcrypt.gensalt())
     for user in data:
         storedPassword = user['password']
-        if user_name == user['user'] and bcrypt.checkpw(hashed, storedPassword.encode('utf-8')):
+        if user_name == user['user_name'] and bcrypt.checkpw(hashed, storedPassword.encode('utf-8')):
             return user
     return None
