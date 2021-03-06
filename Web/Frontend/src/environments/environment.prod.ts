@@ -5,4 +5,5 @@
  */
 export const environment = {
   production: true,
+  apiUrl: 'http://seminario-load-balancer-1300044666.us-east-1.elb.amazonaws.com'
 };

@@ -1,0 +1,42 @@
+<h1 id="title" class="title"><img style="max-width: 100px;">CREAR USUARIO</h1>
+
+
+<form (ngSubmit)="register()" #form="ngForm" aria-labelledby="title">
+
+  <div class="form-control-group">
+    <input (change)="onFileSelect($event)" type="file" style="display:none" #fileInput /> <button fullWidth nbButton
+      status="success" (click)="fileInput.click()">
+      Subir Imagen
+    </button>
+  </div>
+
+
+  <div class="row">
+    <div class="col-6">
+      <div class="form-control-group">
+        <label class="label" for="input-name">Nombre de Usuario:</label>
+        <input nbInput [(ngModel)]="user.user_name" #name="ngModel" id="input-name" name="name"
+          placeholder="Nombre de Usuario" autofocus fullWidth fieldSize="large">
+
+      </div>
+
+    </div>
+    <div class="col-6">
+      <div class="form-control-group">
+        <label class="label" for="input-fullname">Nombre Completo:</label>
+        <input nbInput [(ngModel)]="user.fullname" #lastName="ngModel" id="input-fullname" name="fullname"
+          placeholder="Nombre Completo" autofocus fullWidth fieldSize="large">
+      </div>
+    </div>
+  </div>
+
+  <div class="form-control-group">
+    <label class="label" for="input-password">Contraseña:</label>
+    <input nbInput [(ngModel)]="user.password" #password="ngModel" type="password" id="input-password" name="password"
+      placeholder="Contraseña" fullWidth fieldSize="large">
+  </div>
+
+  <button nbButton fullWidth status="primary" size="large">
+    Crear
+  </button>
+</form>

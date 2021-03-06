@@ -10,4 +10,7 @@
 
 export const environment = {
   production: false,
+  //apiUrl: 'http://seminario-load-balancer-1300044666.us-east-1.elb.amazonaws.com'
+  apiUrl: 'http://ec2-54-167-156-180.compute-1.amazonaws.com'
+  //apiUrl: 'http://ec2-3-88-115-247.compute-1.amazonaws.com'
 };
