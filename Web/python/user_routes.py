@@ -9,7 +9,7 @@ def createUser():
     
     username = data['user_name']
     fullname = data['fullname']
-    password = bcrypt.hashpw(data['password'], bcrypt.gensalt())
+    password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
 
     validation = user_helper.validate(username, fullname, password)
     
@@ -79,7 +79,7 @@ def authUser():
     data = request.json
 
     username = data['username']
-    password = data['password']
+    password = data['password'].encode('utf-8')
 
     user = user_helper.user_auth(username, password)
 
