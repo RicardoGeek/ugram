@@ -46,7 +46,7 @@ exports.createAlbum = async (req, res) => {
 
 }
 
-validate = async (body) => {
+let validate = async (body) => {
     listErrors = [];
 
 

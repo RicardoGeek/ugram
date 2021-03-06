@@ -1,7 +1,6 @@
-
 var AWS = require('aws-sdk');
 var aws_keys = require('../config/creeds.js');
-
+var bcrypt = require('bcrypt');
 
 
 const dynamo = new AWS.DynamoDB(aws_keys.dynamodb);
@@ -30,7 +29,7 @@ exports.createUser = async (req, res) => {
                     S: body.fullname
                 },
                 'password': {
-                    S: body.password
+                    S: bcrypt.hashSync(body.password, 10)
                 }
             }
         }, (err, data) => {
@@ -50,7 +49,7 @@ exports.createUser = async (req, res) => {
 
 }
 
-validateUpdate = async (body) => {
+let validateUpdate = async (body) => {
     listErrors = [];
     if (!body.fullname) {
         listErrors.push('El nombre completo es requerido');
@@ -63,7 +62,7 @@ validateUpdate = async (body) => {
     return listErrors;
 
 }
-validate = async (body) => {
+let validate = async (body) => {
     listErrors = [];
 
 
@@ -180,4 +179,49 @@ exports.updateUser = async (req, res) => {
             }
         });
     }
+}
+
+exports.authUser = async (req, res) => {
+    let user = req.body.username;
+    let password = req.body.password;
+    params = {
+        TableName: "users",
+        FilterExpression: "user_name = :ip",
+        ExpressionAttributeValues: {
+            ":ip": {
+                S: user
+            }
+        }
+
+    }
+
+    dynamo.scan(params, (err, data) => {
+        if (err) {
+            res.status(500).send({
+                'status': 'error',
+                'message': err
+            })
+        } else {
+            if (data.Items.length > 0) {
+                let pass = data.Items[0].password.S;
+                if (bcrypt.compareSync(password, pass)) {
+                    res.status(200).send({
+                        'status': 'success',
+                        'message': data
+                    })
+                } else {
+                    res.status(401).send({
+                        'status': 'error',
+                        'message': 'Unauthorized'
+                    })
+                }
+
+            } else {
+                res.status(401).send({
+                    'status': 'error',
+                    'message': 'Unauthorized'
+                })
+            }
+        }
+    });
 }
