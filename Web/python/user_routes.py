@@ -1,5 +1,6 @@
 from server import app, request
 from utils import user_helper
+import bcrypt
 
 @app.route('/user', methods=['POST'])
 def createUser():
@@ -8,7 +9,7 @@ def createUser():
     
     username = data['user_name']
     fullname = data['fullname']
-    password = data['password']
+    password = bcrypt.hashpw(data['password'], bcrypt.gensalt())
 
     validation = user_helper.validate(username, fullname, password)
     

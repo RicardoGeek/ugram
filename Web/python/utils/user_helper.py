@@ -1,5 +1,6 @@
 import boto3
 from boto3.dynamodb.conditions import Key
+import bcrypt
 
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 dynamoClient = boto3.client('dynamodb', region_name='us-east-1')
@@ -95,7 +96,8 @@ def isUnique(user_name, users):
 
 def seekUser(user_name, password, userData):
     data = userData['Items']
+    hashed = bcrypt.hashpw(password, bcrypt.gensalt())
     for user in data:
-        if user_name == user['user'] and password == user['password']:
+        if user_name == user['user'] and bcrypt.checkpw(password, user['password']):
             return user
     return None
