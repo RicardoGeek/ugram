@@ -1,6 +1,6 @@
 from server import app, request
 from utils import user_helper
-import bcrypt
+import hashlib
 
 @app.route('/user', methods=['POST'])
 def createUser():
@@ -9,7 +9,7 @@ def createUser():
     
     username = data['user_name']
     fullname = data['fullname']
-    password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
+    password = hashlib.md5(str(data['password']).encode('utf-8')).hexdigest()
 
     validation = user_helper.validate(username, fullname, password)
     
@@ -50,7 +50,7 @@ def updateUser(user_name):
     data = request.json
     
     fullname = data['fullname']
-    password = data['password']
+    password = password = hashlib.md5(str(data['password']).encode('utf-8')).hexdigest()
 
     validation = user_helper.validate_update(fullname, password)
 
@@ -79,7 +79,7 @@ def authUser():
     data = request.json
 
     username = data['username']
-    password = data['password'].encode('utf-8')
+    password = data['password']
 
     user = user_helper.user_auth(username, password)
 
