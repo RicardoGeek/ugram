@@ -1,7 +1,6 @@
 var AWS = require('aws-sdk');
 var aws_keys = require('../config/creeds.js');
-var bcrypt = require('bcrypt');
-
+var crypto = require('crypto');
 
 const dynamo = new AWS.DynamoDB.DocumentClient(aws_keys.dynamodb);
 
@@ -24,7 +23,7 @@ exports.createUser = async (req, res) => {
             Item: {
                 'user_name': body.user_name,
                 'fullname': body.fullname,
-                'password': bcrypt.hashSync(body.password, 10)
+                'password': crypto.createHash('md5').update(body.password).digest('hex')
             }
         }, (err, data) => {
             if (err) {
@@ -147,7 +146,7 @@ exports.updateUser = async (req, res) => {
             ConditionExpression: 'attribute_exists(user_name)',
             ExpressionAttributeValues: {
                 ':fn': body.fullname,
-                ':p': body.password
+                ':p': crypto.createHash('md5').update(body.password).digest('hex')
             },
             ReturnValues: "UPDATED_NEW"
         }
@@ -188,7 +187,8 @@ exports.authUser = async (req, res) => {
         } else {
             if (data.Items.length > 0) {
                 let pass = data.Items[0].password;
-                if (bcrypt.compareSync(password, pass)) {
+                let reqPassword = crypto.createHash('md5').update(req.body.password).digest('hex')
+                if (pass === reqPassword) {
                     res.status(200).send({
                         'status': 'success',
                         'message': data
