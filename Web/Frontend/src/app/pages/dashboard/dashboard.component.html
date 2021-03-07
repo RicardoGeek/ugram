@@ -62,7 +62,7 @@
             <nb-card-body style="display:inline-block;">
               <div class="box" *ngFor="let photo of item[1]">
                 <img [src]="bucket + photo.url">
-                <label>{{photo.id_photo}}</label>
+                <label>{{photo.caption}}</label>
               </div>
 
 
@@ -90,24 +90,29 @@
           <br>
           <br>
           <div class="row">
-            <!-- <div class="col-6">
+            <div class="col-6">
               <div class="form-control-group">
-                <label class="label" >Nombre:</label>
-                <input nbInput [(ngModel)]="photoName"  [ngModelOptions]="{standalone: true}"
+                <label class="label">Nombre:</label>
+                <input nbInput [(ngModel)]="photoName" [ngModelOptions]="{standalone: true}"
                   placeholder="Nombre de la Foto" autofocus fullWidth fieldSize="large">
 
               </div>
 
-            </div> -->
-
+            </div>
+          </div>
+          <br>
+          <br>
+          <div class="row">
             <div class="col-6">
               <div class="form-control-group">
-                <select [(ngModel)]="selectAlbum" [ngModelOptions]="{standalone: true}">
+                <label class="label">Album:</label>
+                <select style="margin-left: 3px;" [(ngModel)]="selectAlbum" [ngModelOptions]="{standalone: true}">
                   <option *ngFor="let item of albumArray" [value]="item.id_album">{{item.album_name}}</option>
                 </select>
               </div>
             </div>
           </div>
+          
 
           <br>
           <button nbButton (click)="upload()" fullWidth status="primary" size="large">

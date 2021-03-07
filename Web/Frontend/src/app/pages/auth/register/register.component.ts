@@ -18,6 +18,7 @@ export class RegisterComponent {
 
   user: User = new User();
   photo: any;
+  caption: String;
   constructor(private authService: UserService,
     private albumService: AlbumService,
     private photoService: PhotoService,
@@ -44,6 +45,7 @@ export class RegisterComponent {
             photo.id_album = album.id_album;
             photo.id_photo = data.result;
             photo.url = data.result;
+            photo.caption = this.caption;
             this.photoService.createPhoto(photo).subscribe(data => {
               localStorage.setItem('user-name', this.user.user_name.toString());
               this.router.navigate(['/pages/dashboard']);

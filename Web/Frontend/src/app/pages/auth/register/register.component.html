@@ -4,10 +4,17 @@
 <form  #form="ngForm" aria-labelledby="title">
 
   <div class="form-control-group">
-    <input (change)="onFileSelect($event)" type="file" style="display:none" #fileInput /> <button fullWidth nbButton
+    <div class="col-6">
+      <input (change)="onFileSelect($event)" type="file" style="display:none" #fileInput /> <button fullWidth nbButton
       status="success" (click)="fileInput.click()">
       Subir Imagen
     </button>
+    </div>
+    <div class="col-6">
+      <label class="label" for="input-name">Nombre de la Foto:</label>
+      <input nbInput [(ngModel)]="caption" #name="ngModel" id="input-name" name="name"
+        placeholder="Nombre de la Foto" autofocus fullWidth fieldSize="large">
+    </div>
   </div>
 
 

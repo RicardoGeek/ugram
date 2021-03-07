@@ -113,6 +113,7 @@ export class DashboardComponent implements OnInit {
         photo.id_album = this.selectAlbum;
         photo.id_photo = data.result;
         photo.url = data.result;
+        photo.caption = this.photoName;
         this.photosService.createPhoto(photo).subscribe(data => {
           this.uploadPhoto = false;
         })
