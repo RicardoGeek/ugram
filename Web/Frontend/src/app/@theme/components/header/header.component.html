@@ -10,7 +10,7 @@
     >
       <nb-icon [icon]="(materialTheme$ | async) ? 'menu-outline' : 'menu-2-outline'"></nb-icon>
     </a>
-    <a class="logo" href="#" (click)="navigateHome()">ngx-<span>admin</span></a>
+    <a class="logo" href="#" (click)="navigateHome()">U<span>gram</span></a>
   </div>
   <nb-select
     status="primary"
@@ -24,33 +24,13 @@
       matRipple
     >{{ theme.name }}</nb-option>
   </nb-select>
-  <ngx-layout-direction-switcher class="direction-switcher"></ngx-layout-direction-switcher>
+  
 </div>
 
 <div class="header-container">
   <nb-actions size="small">
 
-    <nb-action class="control-item">
-      <nb-search
-        type="rotate-layout"
-        matRipple
-        [matRippleUnbounded]="true"
-        [matRippleCentered]="true"
-      ></nb-search></nb-action>
-    <nb-action
-      class="control-item"
-      icon="email-outline"
-      matRipple
-      [matRippleUnbounded]="true"
-      [matRippleCentered]="true"
-    ></nb-action>
-    <nb-action
-      class="control-item"
-      icon="bell-outline"
-      matRipple
-      [matRippleUnbounded]="true"
-      [matRippleCentered]="true"
-    ></nb-action>
+   
     <nb-action
       class="user-action"
       *nbIsGranted="['view', 'user']"

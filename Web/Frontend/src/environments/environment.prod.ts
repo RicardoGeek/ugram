@@ -5,5 +5,6 @@
  */
 export const environment = {
   production: true,
-  apiUrl: 'http://seminario-load-balancer-1300044666.us-east-1.elb.amazonaws.com'
+  apiUrl: 'http://seminario-load-balancer-1300044666.us-east-1.elb.amazonaws.com',
+  bucketUrl: 'https://bucket-imagenes-practica1.s3.amazonaws.com/'
 };

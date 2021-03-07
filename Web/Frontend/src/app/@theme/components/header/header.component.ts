@@ -6,6 +6,7 @@ import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { RippleService } from '../../../@core/utils/ripple.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'ngx-header',
@@ -48,7 +49,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   currentTheme = 'default';
 
-  userMenu = [ { title: 'Profile' }, { title: 'Log out' } ];
+  userMenu = [{ title: 'Editar Perfil' }, { title: 'Cerrar Sesion' }];
 
   public constructor(
     private sidebarService: NbSidebarService,
@@ -58,6 +59,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private layoutService: LayoutService,
     private breakpointService: NbMediaBreakpointsService,
     private rippleService: RippleService,
+    private router: Router,
   ) {
     this.materialTheme$ = this.themeService.onThemeChange()
       .pipe(map(theme => {
@@ -67,6 +69,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    
     this.currentTheme = this.themeService.currentTheme;
 
     this.userService.getUsers()
@@ -90,11 +93,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.currentTheme = themeName;
         this.rippleService.toggle(themeName?.startsWith('material'));
       });
+
+
+    this.menuService.onItemClick().subscribe((event) => {
+      this.onItemSelection(event.item.title);
+    });
   }
 
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  onItemSelection(title) {
+    if (title === 'Cerrar Sesion') {
+      localStorage.removeItem('user_name');
+      this.router.navigate(['/auth/login']);
+    }  else if (title === 'Editar Perfil') {
+      console.log("Usuario")
+    }
   }
 
   changeTheme(themeName: string) {

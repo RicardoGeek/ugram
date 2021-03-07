@@ -27,11 +27,11 @@ export class AlbumService {
     return this.http.post(this.baseUrl + '/album/' + user + '/' + albumId + '/update', album, this.httpOptions());
   }
 
-  getUserAlbum(user: String) {
+  getUserAlbum(user: String): Observable<any> {
     return this.http.get(this.baseUrl + '/album/' + user, this.httpOptions());
   }
 
   deleteAlbum(user: String, albumId: String): Observable<any>{
-    return this.http.delete(this.baseUrl + '/' + user + '/' + albumId + '/delete');
+    return this.http.delete(this.baseUrl + '/album/' + user + '/' + albumId + '/delete');
   }
 }

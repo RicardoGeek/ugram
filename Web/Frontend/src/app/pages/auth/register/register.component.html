@@ -1,7 +1,7 @@
 <h1 id="title" class="title"><img style="max-width: 100px;">CREAR USUARIO</h1>
 
 
-<form (ngSubmit)="register()" #form="ngForm" aria-labelledby="title">
+<form  #form="ngForm" aria-labelledby="title">
 
   <div class="form-control-group">
     <input (change)="onFileSelect($event)" type="file" style="display:none" #fileInput /> <button fullWidth nbButton
@@ -36,7 +36,11 @@
       placeholder="Contraseña" fullWidth fieldSize="large">
   </div>
 
-  <button nbButton fullWidth status="primary" size="large">
+  <button nbButton (click) = "register()" fullWidth status="primary" size="large">
     Crear
   </button>
 </form>
+
+<section class="another-action" aria-label="Register">
+  ya tienes Cuenta? <a class="text-link" routerLink="../login">Login</a>
+</section>
