@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { NbDialogService } from '@nebular/theme';
 import { environment } from '../../../environments/environment';
+import { DialogComponent } from '../../@theme/components/dialogs/dialog/dialog.component';
 import { Album } from '../../models/album';
 import { Photo } from '../../models/photo';
 import { PhotoS3 } from '../../models/photoS3';
@@ -17,7 +19,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(private userService: UserService,
     private photosService: PhotoService,
-    private albumService: AlbumService) {
+    private albumService: AlbumService,
+    private dialogService: NbDialogService) {
 
   }
 
@@ -62,6 +65,8 @@ export class DashboardComponent implements OnInit {
           this.photosArray = [...grouped];
         }
 
+
+
       })
     }
 
@@ -103,22 +108,31 @@ export class DashboardComponent implements OnInit {
   }
 
   upload() {
-    this.photosService.upload(this.newFile).subscribe(responseUpload => {
-      let photoS3 = new PhotoS3;
-      photoS3.filename = responseUpload.file;
-      photoS3.user_name = this.user.user_name;
-      this.photosService.save(photoS3).subscribe(data => {
-        let photo = new Photo;
-        photo.id_user = this.user.user_name;
-        photo.id_album = this.selectAlbum;
-        photo.id_photo = data.result;
-        photo.url = data.result;
-        photo.caption = this.photoName;
-        this.photosService.createPhoto(photo).subscribe(data => {
-          this.uploadPhoto = false;
+    if (this.newFile && this.photoName && this.selectAlbum) {
+      this.photosService.upload(this.newFile).subscribe(responseUpload => {
+        let photoS3 = new PhotoS3;
+        photoS3.filename = responseUpload.file;
+        photoS3.user_name = this.user.user_name;
+        this.photosService.save(photoS3).subscribe(data => {
+          let photo = new Photo;
+          photo.id_user = this.user.user_name;
+          photo.id_album = this.selectAlbum;
+          photo.id_photo = data.result;
+          photo.url = data.result;
+          photo.caption = this.photoName;
+          this.photosService.createPhoto(photo).subscribe(data => {
+            this.uploadPhoto = false;
+            this.newFile = undefined;
+            this.photoName = '';
+            this.selectAlbum = '';
+          })
         })
       })
-    })
+    } else {
+      this.dialogService
+        .open(DialogComponent, { context: { data: 'Faltan datos para cargar la foto' } })
+    }
+
 
 
 
@@ -149,17 +163,36 @@ export class DashboardComponent implements OnInit {
 
   createAlbum() {
     this.newAlbum.user_name = this.user.user_name;
-    this.newAlbum.id_album = this.user.user_name.concat(this.newAlbum.album_name.toString());
 
-    this.albumService.createAlbum(this.newAlbum).subscribe(data => {
-      this.newAlbum = new Album;
+    if (this.newAlbum.user_name && this.newAlbum.album_name) {
+      this.newAlbum.id_album = this.user.user_name.concat(this.newAlbum.album_name.toString());
+
+
+      this.albumService.createAlbum(this.newAlbum).subscribe(data => {
+        this.newAlbum = new Album;
+        this.seeAlbum = false;
+      })
+    } else {
+      this.dialogService
+        .open(DialogComponent, { context: { data: 'Faltan datos para crear album' } })
+    }
+
+  }
+
+  deleteAlbum() {
+    this.albumService.deleteAlbum(this.user.user_name, this.selectAlbum).subscribe(data => {
       this.seeAlbum = false;
     })
   }
 
-  deleteAlbum() {
-    this.albumService.deleteAlbum(this.user.user_name, this.selectAlbum).subscribe(data=>{
-      this.seeAlbum = false;
+  deletePhoto(id_photo: string) {
+    console.log(id_photo)
+    let userBody = {
+      "user_id": this.user.user_name
+    }
+    this.photosService.deletePhoto(id_photo, userBody).subscribe(data => {
+      this.seePhotos = false;
+
     })
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
+import { NbDialogService, NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
 
 import { UserData } from '../../../@core/data/users';
 import { LayoutService } from '../../../@core/utils';
@@ -7,6 +7,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { RippleService } from '../../../@core/utils/ripple.service';
 import { Router } from '@angular/router';
+import { EditUserComponent } from '../dialogs/edit-user/edit-user.component';
 
 @Component({
   selector: 'ngx-header',
@@ -60,6 +61,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private breakpointService: NbMediaBreakpointsService,
     private rippleService: RippleService,
     private router: Router,
+    private dialogService: NbDialogService
   ) {
     this.materialTheme$ = this.themeService.onThemeChange()
       .pipe(map(theme => {
@@ -110,7 +112,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       localStorage.removeItem('user_name');
       this.router.navigate(['/auth/login']);
     }  else if (title === 'Editar Perfil') {
-      console.log("Usuario")
+        this.dialogService.open(EditUserComponent, {context: {}});
     }
   }
 

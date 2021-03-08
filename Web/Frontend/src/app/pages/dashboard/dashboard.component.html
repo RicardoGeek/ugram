@@ -59,11 +59,18 @@
             <nb-card-header>
               {{item[0]}}
             </nb-card-header>
-            <nb-card-body style="display:inline-block;">
-              <div class="box" *ngFor="let photo of item[1]">
-                <img [src]="bucket + photo.url">
-                <label>{{photo.caption}}</label>
+            <nb-card-body>
+              <div class="row">
+                <div class="col-3" style="display: -webkit-inline-box;" *ngFor="let photo of item[1]">
+                  <div class="box">
+                    <img [src]="bucket + photo.url">
+                    <label>{{photo.caption}}</label>
+                  </div>
+                  <button nbButton status="danger"><nb-icon icon="trash" (click)="deletePhoto(photo.id_photo)"></nb-icon></button>
+                </div>
+
               </div>
+
 
 
             </nb-card-body>
@@ -112,7 +119,7 @@
               </div>
             </div>
           </div>
-          
+
 
           <br>
           <button nbButton (click)="upload()" fullWidth status="primary" size="large">

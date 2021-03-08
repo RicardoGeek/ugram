@@ -37,8 +37,9 @@ export class PhotoService {
     return this.http.get(this.baseUrl + '/photos/' + user + '/' + albumId, this.httpOptions());
   }
 
-  deletePhoto(id: String): Observable<any> {
-    return this.http.delete(this.baseUrl + '/photos/' + id);
+  deletePhoto(id: string, user:any): Observable<any> {
+    let headers =  new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.request('delete',this.baseUrl + '/photos/' + encodeURIComponent(id), {body: user, headers: headers});
   }
 
   save(photo: PhotoS3): Observable<any> {

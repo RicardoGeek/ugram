@@ -13,6 +13,8 @@ import {
   NbSelectModule,
   NbIconModule,
   NbThemeModule,
+  NbCardModule,
+  NbInputModule,
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { NbSecurityModule } from '@nebular/security';
@@ -42,6 +44,9 @@ import { CORPORATE_THEME } from './styles/theme.corporate';
 import { DARK_THEME } from './styles/theme.dark';
 import { MATERIAL_LIGHT_THEME } from './styles/material/theme.material-light';
 import { MATERIAL_DARK_THEME } from './styles/material/theme.material-dark';
+import { DialogComponent } from './components/dialogs/dialog/dialog.component';
+import { EditUserComponent } from './components/dialogs/edit-user/edit-user.component';
+import { FormsModule } from '@angular/forms';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -56,6 +61,9 @@ const NB_MODULES = [
   NbSelectModule,
   NbIconModule,
   NbEvaIconsModule,
+  NbCardModule,
+  FormsModule,
+  NbInputModule
 ];
 const COMPONENTS = [
   SwitcherComponent,
@@ -66,6 +74,8 @@ const COMPONENTS = [
   OneColumnLayoutComponent,
   ThreeColumnsLayoutComponent,
   TwoColumnsLayoutComponent,
+  DialogComponent,
+  EditUserComponent
 ];
 const PIPES = [
   CapitalizePipe,
@@ -79,6 +89,7 @@ const PIPES = [
   imports: [CommonModule, MatRippleModule, ...NB_MODULES],
   exports: [CommonModule, MatRippleModule, ...PIPES, ...COMPONENTS],
   declarations: [...COMPONENTS, ...PIPES],
+  entryComponents: [DialogComponent , EditUserComponent]
 })
 export class ThemeModule {
   static forRoot(): ModuleWithProviders<ThemeModule> {
