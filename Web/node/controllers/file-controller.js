@@ -28,8 +28,6 @@ exports.uploadFileTemp = async (req, res) => {
 }
 
 exports.saveImage = async (req, res) => {
-
-    
     let body = req.body;
     let file = fs.readFileSync('../node/tmp/' + body.filename);
     let uploadUserPhoto = {
@@ -53,5 +51,23 @@ exports.saveImage = async (req, res) => {
             })
         }
     });
+
+}
+
+exports.deletePhotoS3 = async (url) => {
+    var params = {
+        Bucket: 'bucket-imagenes-practica1',
+        Key: url
+    }
+
+    return s3.deleteObject(params).promise();
+
+
+
+}
+
+exports.deletePhotosByalbum = async (id_album) =>{
+
+    
 
 }

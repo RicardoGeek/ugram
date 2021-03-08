@@ -1,8 +1,9 @@
 var AWS = require('aws-sdk');
 var aws_keys = require('../config/creeds.js');
-
+var fileController = require('./file-controller')
 
 const dynamo = new AWS.DynamoDB.DocumentClient(aws_keys.dynamodb);
+
 
 exports.createPhoto = async (req, res) => {
     let body = req.body;
@@ -127,6 +128,7 @@ exports.getUserPhotosByAlbum = async (req, res) => {
 
 }
 
+
 exports.deletePhoto = async (req, res) => {
     let photo = req.params.id_photo;
 
@@ -148,10 +150,55 @@ exports.deletePhoto = async (req, res) => {
                 'message': err
             })
         } else {
-            res.status(200).send({
-                'status': 'success',
-                'message': data
-            })
+            fileController.deletePhotoS3(photo)
+                .then(data => {
+                    res.status(200).send(data)
+                })
+                .catch(error => {
+                    res.status(500).send(error)
+                });
+
+        }
+    });
+}
+
+exports.deletePhotosByAlbum = async (id_user, id_album) => {
+    params = {
+        TableName: "photos",
+        FilterExpression: "id_user = :ip and id_album = :ia",
+        ExpressionAttributeValues: {
+            ":ip": id_user,
+            ":ia": id_album
+        }
+
+    }
+
+    dynamo.scan(params, (err, dataPhotos) => {
+        if (err) {
+            console.log("data")
+        } else {
+            dataPhotos.Items.forEach(photo => {
+                fileController.deletePhotoS3(photo.url)
+                    .then(data => {
+                        paramsDelete = {
+                            TableName: 'photos',
+                            Key: {
+                                "id_photo": photo.id_photo
+                            },
+                            ConditionExpression: "id_album = :ip",
+                            ExpressionAttributeValues: {
+                                ":ip": id_album
+                            }
+                        };
+
+                        dynamo.delete(paramsDelete, (err, data) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                        });
+                    });
+            });
+
         }
     });
 }

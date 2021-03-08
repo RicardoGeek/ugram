@@ -1,6 +1,6 @@
 var AWS = require('aws-sdk');
 var aws_keys = require('../config/creeds.js');
-
+var photosController = require('./photo-controller')
 
 const dynamo = new AWS.DynamoDB.DocumentClient(aws_keys.dynamodb);
 
@@ -124,7 +124,7 @@ exports.updateAlbum = async (req, res) => {
 
 exports.deleteAlbum = async (req, res) => {
     let album = req.params.id_album;
-
+    
     params = {
         TableName: 'albumes',
         Key: {
@@ -143,6 +143,7 @@ exports.deleteAlbum = async (req, res) => {
                 'message': err
             })
         } else {
+            photosController.deletePhotosByAlbum(req.params.user_id, album)
             res.status(200).send({
                 'status': 'success',
                 'message': data
