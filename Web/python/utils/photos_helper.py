@@ -53,14 +53,15 @@ def get_all_user_photos(user_name):
     return filtered_photos
 
 def delete_photo(id_photo, user_name):
+    print(user_name)
     table = dynamodb.Table('photos')
     deleteResponse = table.delete_item(
         Key = {
             'id_photo': id_photo
         },
-        ConditionExpression="id_user = :u",
+        ConditionExpression="id_user = :idu",
         ExpressionAttributeValues={
-            ":u": user_name
+            ":idu": user_name
         }
     )
 

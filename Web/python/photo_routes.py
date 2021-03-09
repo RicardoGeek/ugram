@@ -64,7 +64,7 @@ def getUserPhotosByAlbums(id_user, id_album):
         'message': photos
     }, 200
 
-@app.route('/photos/<id_photo>', methods=['DELETE'])
+@app.route('/photos/<path:id_photo>', methods=['DELETE'])
 def deletePhoto(id_photo):
     request.get_json(force = True)
     data = request.json
