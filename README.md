@@ -11,4 +11,4 @@ Aplicación para el almacenamiento de fotos
 
 Se crearon 2 instancias de AWS EC2 de capa gratuita, uno para el backend nodejs y otro para el backend python.
 
-[instancias](docs/ec2.PNG)
+![instancias](https://github.com/RicardoGeek/ugram/blob/main/docs/ec2.PNG)
