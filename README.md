@@ -72,4 +72,29 @@ Luego actualizar el daemon e iniciar el servicio
 
 ```sudo systemctl start ugram```
 
+4. Credenciales AWS
+En el path ```~/.aws/credentials``` cofiguramos las llaves de aws para el usuario que tiene acceso a S3 y a dynamo que creamos para los backends, este paso es similar a el backend en node.
 
+
+## Configuracion Backend node
+```
+sudo apt-get install nodejs  --> Instalar node
+sudo npm install -g pm2 --> Administrador de procesos para nodejs
+
+git clone repositorio
+npm install
+
+pm2 start index.js   --> Iniciar el servidor node
+pm2 stop index.js  --> Parar el servidor node
+pm2 restart index.js  --> Reiniciar el servidor node
+```
+
+Arranca el servidor en puerto 3000
+
+Luego de forma similar configurar el nginx y el daemon
+
+## Usuarios
+
+se crearon diferentes usuarios para poder acceder a los diferentes servicios de Aws tanto en administracion como en comunicacion de backends.
+
+![users](https://github.com/RicardoGeek/ugram/blob/main/docs/users1.PNG)
