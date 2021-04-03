@@ -1,7 +1,6 @@
 const AWS = require('aws-sdk');
 const aws_keys = require('../config/creeds.js');
 const crypto = require('crypto');
-const atob = require('atob')
 
 const dynamo = new AWS.DynamoDB.DocumentClient(aws_keys.dynamodb);
 const rekognition = new AWS.Rekognition(aws_keys.rekognition);
@@ -170,7 +169,7 @@ exports.photoLogin = async (req, res) => {
     params = {
         TableName: "photos",
         ExpressionAttributeValues: {
-            ':user': `${user}/`
+            ':user': `${user}`
         },
         FilterExpression: 'contains(id_photo, :user)'
     }
@@ -186,7 +185,8 @@ exports.photoLogin = async (req, res) => {
             if(data.Items.length > 0) {
                 let defaultPhotoAddress = data.Items[0].id_photo
                 for(item in data.Items) {
-                    if (data.Items[item].id_album === `${user}/Default`) {
+                    if (data.Items[item].id_album === `${user}Default`) {
+                        console.log(data.Items[item].id_photo)
                         defaultPhotoAddress = data.Items[item].id_photo
                     }
                 }
@@ -223,15 +223,19 @@ exports.photoLogin = async (req, res) => {
                                 'message': rekerr
                             })
                         }
-                        const faceMatch = data.FaceMatches[0].Similarity
-                        const confidence = data.FaceMatches[0].Face.Confidence
-                        res.status(200).send({
-                            'status': 'success',
-                            'result': {
-                                'match': faceMatch,
-                                'confidence': confidence
-                            }
-                        })
+                        console.log(data)
+                        if(data) {
+                            const faceMatch = data.FaceMatches[0].Similarity
+                            const confidence = data.FaceMatches[0].Face.Confidence
+                            res.status(200).send({
+                                'status': 'success',
+                                'result': {
+                                    'match': faceMatch,
+                                    'confidence': confidence
+                                }
+                            })
+                        }
+                        
                     })
                 })
             } else {

@@ -3,7 +3,69 @@ var aws_keys = require('../config/creeds.js');
 var fileController = require('./file-controller')
 
 const dynamo = new AWS.DynamoDB.DocumentClient(aws_keys.dynamodb);
+const rekognition = new AWS.Rekognition(aws_keys.rekognition);
+const s3 = new AWS.S3(aws_keys.s3);
+const s3Bucket = 'bucket-imagenes-practica1';
 
+exports.tagPhoto = async (req, res) => {
+    let body = req.body
+    const s3Photo = body.photo
+
+    const rekognitionParams = {
+        Image: {
+            S3Object: {
+                Bucket: s3Bucket,
+                Name: s3Photo
+            }
+        },
+        MaxLabels: 10
+    }
+
+    rekognition.detectLabels(rekognitionParams, (rekognitionError, response) => {
+        if(rekognitionError) {
+            res.status(500).send({
+                'status': 'error',
+                'message': rekognitionError
+            })
+        }
+
+        const labels = response.Labels
+        const tags = []
+        for(labelIdx in labels) {
+            const label = labels[labelIdx]
+            if (label.Confidence > 80) {
+                tags.push(label.Name)
+            }
+        }
+
+        let params = {
+            TableName: 'photos',
+            Key: {
+                'id_photo': s3Photo
+            },
+            UpdateExpression: 'set tags = :tags',
+            ConditionExpression: 'attribute_exists(id_photo)',
+            ExpressionAttributeValues: {
+                ':tags': tags.toString(),
+            },
+            ReturnValues: "UPDATED_NEW"
+        }
+
+        dynamo.update(params, (err, data) => {
+            if (err) {
+                res.status(500).send({
+                    'status': 'error',
+                    'message': err
+                })
+            } else {
+                res.status(200).send({
+                    'status': 'success',
+                    'message': data
+                })
+            }
+        })
+    })
+}
 
 exports.createPhoto = async (req, res) => {
     let body = req.body;
@@ -123,9 +185,6 @@ exports.getUserPhotosByAlbum = async (req, res) => {
             })
         }
     });
-
-
-
 }
 
 
