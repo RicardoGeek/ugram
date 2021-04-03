@@ -1,9 +1,11 @@
-var AWS = require('aws-sdk');
-var aws_keys = require('../config/creeds.js');
-var crypto = require('crypto');
+const AWS = require('aws-sdk');
+const aws_keys = require('../config/creeds.js');
+const crypto = require('crypto');
+const atob = require('atob')
 
 const dynamo = new AWS.DynamoDB.DocumentClient(aws_keys.dynamodb);
-
+const rekognition = new AWS.Rekognition(aws_keys.rekognition);
+const s3 = new AWS.S3(aws_keys.s3);
 
 exports.createUser = async (req, res) => {
 
@@ -53,12 +55,10 @@ let validateUpdate = async (body) => {
     }
 
     return listErrors;
-
 }
+
 let validate = async (body) => {
     listErrors = [];
-
-
 
     if (!body.user_name) {
         listErrors.push('El nombre de usuario es requerido');
@@ -91,11 +91,6 @@ let validate = async (body) => {
     if (!body.password) {
         listErrors.push('El password es requerido');
     }
-
-
-
-
-
 
     return listErrors;
 }
@@ -166,6 +161,90 @@ exports.updateUser = async (req, res) => {
     }
 }
 
+exports.photoLogin = async (req, res) => {
+    let user = req.body.username;
+    let photoId = req.body.photoId; // base64 enconded
+
+    const s3Bucket = 'bucket-imagenes-practica1';
+
+    params = {
+        TableName: "photos",
+        ExpressionAttributeValues: {
+            ':user': `${user}/`
+        },
+        FilterExpression: 'contains(id_photo, :user)'
+    }
+    
+    // get the s3 profile photo
+    dynamo.scan(params, (err, data) => {
+        if(err) {
+            res.status(500).send({
+                'status': 'error',
+                'message': err
+            })
+        } else {
+            if(data.Items.length > 0) {
+                let defaultPhotoAddress = data.Items[0].id_photo
+                for(item in data.Items) {
+                    if (data.Items[item].id_album === `${user}/Default`) {
+                        defaultPhotoAddress = data.Items[item].id_photo
+                    }
+                }
+
+                const bucketParams = {
+                    Key: defaultPhotoAddress,
+                    Bucket: s3Bucket
+                }
+
+                s3.getObject(bucketParams, (s3err, data) => {
+                    if(s3err) {
+                        res.status(500).send({
+                            'status': 'error',
+                            'message': err
+                        })
+                    }
+
+                    const sourceImage = data.Body
+                    const targetImage = new Buffer.from(photoId, 'base64')
+
+                    const recognitionParams = {
+                        SourceImage: {
+                            Bytes: sourceImage
+                        },
+                        TargetImage: {
+                            Bytes: targetImage
+                        }
+                    }
+
+                    rekognition.compareFaces(recognitionParams, (rekerr, data) => {
+                        if(rekerr) {
+                            res.status(500).send({
+                                'status': 'error',
+                                'message': rekerr
+                            })
+                        }
+                        const faceMatch = data.FaceMatches[0].Similarity
+                        const confidence = data.FaceMatches[0].Face.Confidence
+                        res.status(200).send({
+                            'status': 'success',
+                            'result': {
+                                'match': faceMatch,
+                                'confidence': confidence
+                            }
+                        })
+                    })
+                })
+            } else {
+                res.status(404).send({
+                    'status': 'error',
+                    'result': 'Usuario no encontrado'
+                })
+            }
+        }
+    })
+
+}
+
 exports.authUser = async (req, res) => {
     let user = req.body.username;
     let password = req.body.password;
@@ -187,7 +266,7 @@ exports.authUser = async (req, res) => {
         } else {
             if (data.Items.length > 0) {
                 let pass = data.Items[0].password;
-                let reqPassword = crypto.createHash('md5').update(req.body.password).digest('hex')
+                let reqPassword = crypto.createHash('md5').update(password).digest('hex')
                 if (pass === reqPassword) {
                     res.status(200).send({
                         'status': 'success',

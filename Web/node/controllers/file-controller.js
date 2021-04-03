@@ -2,15 +2,7 @@ var AWS = require('aws-sdk');
 var aws_keys = require('../config/creeds.js');
 var fs = require('fs');
 
-
-
-
-const dynamo = new AWS.DynamoDB(aws_keys.dynamodb);
 const s3 = new AWS.S3(aws_keys.s3);
-
-
-
-
 
 exports.uploadFileTemp = async (req, res) => {
     if (!req.file) {
@@ -61,9 +53,6 @@ exports.deletePhotoS3 = async (url) => {
     }
 
     return s3.deleteObject(params).promise();
-
-
-
 }
 
 exports.deletePhotosByalbum = async (id_album) =>{
