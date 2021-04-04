@@ -4,7 +4,6 @@ var fileController = require('./file-controller')
 
 const dynamo = new AWS.DynamoDB.DocumentClient(aws_keys.dynamodb);
 const rekognition = new AWS.Rekognition(aws_keys.rekognition);
-const s3 = new AWS.S3(aws_keys.s3);
 const s3Bucket = 'bucket-imagenes-practica1';
 
 exports.tagPhoto = async (req, res) => {

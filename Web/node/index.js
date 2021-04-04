@@ -22,6 +22,7 @@ app.use('/photos', routes.photoRoute);
 app.use('/album', routes.albumRoute);
 app.use('', routes.fileRoute);
 app.use('/auth', userController.authUser);
+app.use('/translate', routes.translate)
 
 app.listen(3000, () => {
   console.log('Listening on port:  ' + 3000);
