@@ -76,7 +76,8 @@ exports.createPhoto = async (req, res) => {
             'caption': body.caption,
             'id_photo': body.id_photo,
             'id_user': body.id_user,
-            'url': body.url
+            'url': body.url,
+            'name': body.name
         }
     }, (err, data) => {
         if (err) {
@@ -102,11 +103,12 @@ exports.updatePhoto = async (req, res) => {
         Key: {
             'id_photo': req.params.id_photo
         },
-        UpdateExpression: 'set caption=:c, #url=:u',
+        UpdateExpression: 'set name=:n, #url=:u, caption=:c',
         ConditionExpression: 'attribute_exists(id_photo)',
         ExpressionAttributeValues: {
+            ':n': body.name,
+            ':u': body.url,
             ':c': body.caption,
-            ':u': body.url
 
         },
         ExpressionAttributeNames: {
