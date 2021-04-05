@@ -32,7 +32,15 @@ export class UserService {
   }
 
   login(user: any): Observable<any> {
+    return this.http.post(this.baseUrl+ '/user/photo-auth', user, this.httpOptions());
+  }
+
+  loginPassword(user: any): Observable<any> {
     return this.http.post(this.baseUrl+ '/auth', user, this.httpOptions());
+  }
+
+  translate(text: any): Observable<any>{
+    return this.http.post(this.baseUrl + '/translate', text, this.httpOptions());
   }
 
 

@@ -39,13 +39,13 @@
             </button>
           </div>
         </div>
-        <div class="col-4">
+        <!-- <div class="col-4">
           <div class="form-control-group">
             <button nbButton fullWidth status="primary" size="large" (click)="showAlbum()">
               Editar Albumes
             </button>
           </div>
-        </div>
+        </div> -->
       </div>
     </form>
     <br>
@@ -61,12 +61,31 @@
             </nb-card-header>
             <nb-card-body>
               <div class="row">
-                <div class="col-3" style="display: -webkit-inline-box;" *ngFor="let photo of item[1]">
+                <div class="col-3" style="display: -webkit-inline-box; margin-right: 15%;"
+                  *ngFor="let photo of item[1]">
                   <div class="box">
                     <img [src]="bucket + photo.url">
-                    <label>{{photo.caption}}</label>
+                    <label
+                      style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">{{photo.name}}</label>
+                    <div>
+                      <p>{{photo.tags}}</p>
+                    </div>
+                    <br>
+                    <div>
+                      <label
+                        style="overflow: hidden; font-family: Verdana, Geneva, Tahoma, sans-serif;">{{photo.caption}}</label>
+                    </div>
+
                   </div>
-                  <button nbButton status="danger"><nb-icon icon="trash" (click)="deletePhoto(photo.id_photo)"></nb-icon></button>
+                  <div style="display: inline-grid">
+                    <button nbButton status="danger">
+                      <nb-icon icon="trash" (click)="deletePhoto(photo.id_photo)"></nb-icon>
+                    </button>
+                    <button nbButton status="success">
+                      <nb-icon icon="globe" (click)="openTranslate(photo.caption)"></nb-icon>
+                    </button>
+
+                  </div>
                 </div>
 
               </div>
@@ -112,13 +131,26 @@
           <div class="row">
             <div class="col-6">
               <div class="form-control-group">
+                <label class="label">Descripcion:</label>
+                <input nbInput [(ngModel)]="captionPhoto" [ngModelOptions]="{standalone: true}"
+                  placeholder="Descripcion de la Foto" autofocus fullWidth fieldSize="large">
+
+              </div>
+
+            </div>
+          </div>
+          <br>
+          <br>
+          <!-- <div class="row">
+            <div class="col-6">
+              <div class="form-control-group">
                 <label class="label">Album:</label>
                 <select style="margin-left: 3px;" [(ngModel)]="selectAlbum" [ngModelOptions]="{standalone: true}">
                   <option *ngFor="let item of albumArray" [value]="item.id_album">{{item.album_name}}</option>
                 </select>
               </div>
             </div>
-          </div>
+          </div> -->
 
 
           <br>

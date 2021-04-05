@@ -52,4 +52,8 @@ export class PhotoService {
 
     return this.http.post(this.baseUrl + '/upload', formdata);
   }
+
+  tagPhoto(idPhoto): Observable<any>{
+    return this.http.post(this.baseUrl + '/photos/tag', {photo: idPhoto}, this.httpOptions());
+  }
 }

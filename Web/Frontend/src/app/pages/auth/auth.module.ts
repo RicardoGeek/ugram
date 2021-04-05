@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 
 import { NgxAuthRoutingModule } from './auth-routing.module';
 import { NbAuthModule } from '@nebular/auth';
-import { 
+import {
   NbAlertModule,
   NbButtonModule,
   NbCheckboxModule,
@@ -18,6 +18,7 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { UserService } from '../../services/user.service';
 import { ThemeModule } from '../../@theme/theme.module';
+import { WebCamModule } from 'ack-angular-webcam';
 
 
 
@@ -33,8 +34,9 @@ import { ThemeModule } from '../../@theme/theme.module';
     NgxAuthRoutingModule,
     NbAuthModule,
     NbSelectModule,
-    NbOptionModule
-   
+    NbOptionModule,
+    WebCamModule
+
   ],
   declarations: [
     RegisterComponent,

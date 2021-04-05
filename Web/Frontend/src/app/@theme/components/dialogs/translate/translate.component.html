@@ -1,0 +1,23 @@
+<nb-card>
+  <nb-card-header>Traductor</nb-card-header>
+  <nb-card-body>
+    Descripcion: <span style="font-weight: bold;">{{caption}}</span>
+    <br>
+    <br>
+    <nb-select placeholder="Seleccione Idioma" [(ngModel)]="selectedItemNgModel">
+      <nb-option value="en">Ingles</nb-option>
+      <nb-option value="pt">Portugues</nb-option>
+      <nb-option value="it">Italiano</nb-option>
+    </nb-select>
+    <br>
+    <br>
+    <button nbButton (click)="translate()" fullWidth status="primary" size="large">
+      Traducir
+    </button>
+    <br>
+    <br>
+    <input nbInput [(ngModel)]="textResult" #lastName="ngModel" id="input-fullname" name="result" fullWidth
+      fieldSize="large">
+
+  </nb-card-body>
+</nb-card>

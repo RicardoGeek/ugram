@@ -19,6 +19,7 @@ export class EditUserComponent implements OnInit {
   user: User = new User();
   photo: any;
   caption: String;
+  photoName: String;
 
   constructor(protected ref: NbDialogRef<EditUserComponent>,
     private authService: UserService,
@@ -47,14 +48,14 @@ export class EditUserComponent implements OnInit {
   }
 
   editUser() {
-    if (this.photo && this.caption) {
+    if (this.photo && this.caption && this.photoName) {
       if (this.user.user_name && this.user.fullname && this.user.password) {
 
         let userauth = {
           username: this.user.user_name,
           password: this.user.password
         };
-        this.authService.login(userauth).subscribe(data => {
+        this.authService.loginPassword(userauth).subscribe(data => {
 
           this.photoService.upload(this.photo).subscribe(responseUpload => {
             this.authService.updateUser(this.user.user_name, this.user).subscribe(responseUser => {
@@ -69,8 +70,12 @@ export class EditUserComponent implements OnInit {
                 photo.id_photo = data.result;
                 photo.url = data.result;
                 photo.caption = this.caption;
+                photo.name = this.photoName;
                 this.photoService.createPhoto(photo).subscribe(data => {
-                  this.ref.close(0);
+                  this.photoService.tagPhoto(photo.id_photo).subscribe(data=>{
+                    this.ref.close(0);
+                  })
+
                 })
               })
 

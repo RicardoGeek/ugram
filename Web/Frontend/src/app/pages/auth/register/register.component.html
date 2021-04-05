@@ -12,7 +12,12 @@
     </div>
     <div class="col-6">
       <label class="label" for="input-name">Nombre de la Foto:</label>
-      <input nbInput [(ngModel)]="caption" #name="ngModel" id="input-name" name="name"
+      <input nbInput [(ngModel)]="photoName" #name="ngModel" id="input-name" name="name"
+        placeholder="Nombre de la Foto" autofocus fullWidth fieldSize="large">
+    </div>
+    <div class="col-6">
+      <label class="label" for="input-name">Descripcion:</label>
+      <input nbInput [(ngModel)]="caption" #name="ngModel" id="input-name" name="captionname"
         placeholder="Nombre de la Foto" autofocus fullWidth fieldSize="large">
     </div>
   </div>

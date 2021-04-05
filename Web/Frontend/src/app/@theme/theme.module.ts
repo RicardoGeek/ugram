@@ -47,6 +47,7 @@ import { MATERIAL_DARK_THEME } from './styles/material/theme.material-dark';
 import { DialogComponent } from './components/dialogs/dialog/dialog.component';
 import { EditUserComponent } from './components/dialogs/edit-user/edit-user.component';
 import { FormsModule } from '@angular/forms';
+import { TranslateComponent } from './components/dialogs/translate/translate.component';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -75,7 +76,8 @@ const COMPONENTS = [
   ThreeColumnsLayoutComponent,
   TwoColumnsLayoutComponent,
   DialogComponent,
-  EditUserComponent
+  EditUserComponent,
+  TranslateComponent
 ];
 const PIPES = [
   CapitalizePipe,
@@ -88,8 +90,8 @@ const PIPES = [
 @NgModule({
   imports: [CommonModule, MatRippleModule, ...NB_MODULES],
   exports: [CommonModule, MatRippleModule, ...PIPES, ...COMPONENTS],
-  declarations: [...COMPONENTS, ...PIPES],
-  entryComponents: [DialogComponent , EditUserComponent]
+  declarations: [...COMPONENTS, ...PIPES ],
+  entryComponents: [DialogComponent , EditUserComponent, TranslateComponent]
 })
 export class ThemeModule {
   static forRoot(): ModuleWithProviders<ThemeModule> {

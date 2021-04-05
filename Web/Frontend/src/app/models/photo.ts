@@ -4,4 +4,5 @@ export class Photo {
     caption: String;
     url: String;
     id_user: String;
+    name: String;
 }
