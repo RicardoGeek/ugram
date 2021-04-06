@@ -11,7 +11,7 @@ import { CoreModule } from "./@core/core.module";
 import { ThemeModule } from "./@theme/theme.module";
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
-import Amplify, { Interactions } from "aws-amplify";
+
 import {
   NbChatModule,
   NbDatepickerModule,
@@ -22,21 +22,7 @@ import {
   NbWindowModule,
 } from "@nebular/theme";
 
-Amplify.configure({
-  Auth: {
-    identityPoolId: "us-east-1:28aaaddf-c96a-4922-9588-ce169ae8c8a7",
-    region: "us-east-1",
-  },
-  Interactions: {
-    bots: {
-      fotos_app_dev: {
-        name: "fotos_app_dev",
-        alias: "$LATEST",
-        region: "us-east-1",
-      },
-    },
-  },
-});
+
 
 @NgModule({
   declarations: [AppComponent],
