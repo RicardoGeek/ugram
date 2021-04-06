@@ -3,14 +3,15 @@
  * Copyright Akveo. All Rights Reserved.
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { CoreModule } from './@core/core.module';
-import { ThemeModule } from './@theme/theme.module';
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
+import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { NgModule } from "@angular/core";
+import { HttpClientModule } from "@angular/common/http";
+import { CoreModule } from "./@core/core.module";
+import { ThemeModule } from "./@theme/theme.module";
+import { AppComponent } from "./app.component";
+import { AppRoutingModule } from "./app-routing.module";
+import Amplify, { Interactions } from "aws-amplify";
 import {
   NbChatModule,
   NbDatepickerModule,
@@ -19,7 +20,23 @@ import {
   NbSidebarModule,
   NbToastrModule,
   NbWindowModule,
-} from '@nebular/theme';
+} from "@nebular/theme";
+
+Amplify.configure({
+  Auth: {
+    identityPoolId: "us-east-1:28aaaddf-c96a-4922-9588-ce169ae8c8a7",
+    region: "us-east-1",
+  },
+  Interactions: {
+    bots: {
+      fotos_app_dev: {
+        name: "fotos_app_dev",
+        alias: "$LATEST",
+        region: "us-east-1",
+      },
+    },
+  },
+});
 
 @NgModule({
   declarations: [AppComponent],
@@ -38,11 +55,10 @@ import {
     NbWindowModule.forRoot(),
     NbToastrModule.forRoot(),
     NbChatModule.forRoot({
-      messageGoogleMapKey: 'AIzaSyA_wNuCzia92MAmdLRzmqitRGvCF7wCZPY',
+      messageGoogleMapKey: "AIzaSyA_wNuCzia92MAmdLRzmqitRGvCF7wCZPY",
     }),
     CoreModule.forRoot(),
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

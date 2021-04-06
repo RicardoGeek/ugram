@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { NbDialogService } from "@nebular/theme";
 import { environment } from "../../../environments/environment";
+import { ChatBotComponent } from "../../@theme/components/dialogs/chat-bot/chat-bot.component";
 import { DialogComponent } from "../../@theme/components/dialogs/dialog/dialog.component";
 import { TranslateComponent } from "../../@theme/components/dialogs/translate/translate.component";
 import { Album } from "../../models/album";
@@ -237,5 +238,9 @@ export class DashboardComponent implements OnInit {
     this.dialogService.open(TranslateComponent, {
       context: { caption: caption },
     });
+  }
+
+  openChat(){
+    this.dialogService.open(ChatBotComponent);
   }
 }

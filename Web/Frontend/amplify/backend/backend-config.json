@@ -1,0 +1,16 @@
+{
+  "auth": {
+    "cognito6548130f": {
+      "service": "Cognito",
+      "serviceType": "managed",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "interactions": {
+    "lexdbaafa29": {
+      "service": "Lex",
+      "providerPlugin": "awscloudformation",
+      "build": true
+    }
+  }
+}

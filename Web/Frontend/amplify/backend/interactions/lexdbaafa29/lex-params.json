@@ -1,0 +1,136 @@
+{
+    "resourceName": "lexdbaafa29",
+    "botName": "fotos_app",
+    "intents": [
+        {
+            "slots": [
+                {
+                    "name": "usuario",
+                    "type": "AMAZON.AlphaNumeric",
+                    "prompt": "cual es su nombre de usuario?",
+                    "required": true,
+                    "customType": false
+                },
+                {
+                    "name": "actualizar",
+                    "type": "AMAZON.AlphaNumeric",
+                    "prompt": "desea restaurar su contraseña?",
+                    "required": true,
+                    "customType": false
+                },
+                {
+                    "name": "envioEmail",
+                    "type": "AMAZON.AlphaNumeric",
+                    "prompt": "en este momento se le envio un correo con los datos necesarios para que pueda actualizar su contraseña",
+                    "required": true,
+                    "customType": false
+                },
+                {
+                    "name": "advertencia",
+                    "type": "AMAZON.AlphaNumeric",
+                    "prompt": "En este caso la solucion es actualizar su contraseña por lo que le invitamos a realizar este procedimiento",
+                    "required": true,
+                    "customType": false
+                }
+            ],
+            "utterances": [
+                "error al iniciar sesion",
+                "no puedo iniciar sesion",
+                "recuperar cuenta",
+                "olvide contraseña"
+            ],
+            "intentName": "recuperar_cuenta",
+            "newSlotTypes": []
+        },
+        {
+            "slots": [
+                {
+                    "name": "solicitud",
+                    "type": "AMAZON.AlphaNumeric",
+                    "prompt": "Desea solicitar nuestro nuevo album personalizado?",
+                    "required": true,
+                    "customType": false
+                },
+                {
+                    "name": "city",
+                    "type": "AMAZON.Country",
+                    "prompt": "Cual es su pais de residencia?",
+                    "required": true,
+                    "customType": false
+                },
+                {
+                    "name": "celular",
+                    "type": "AMAZON.PhoneNumber",
+                    "prompt": "Cual es su numero telefonico?",
+                    "required": true,
+                    "customType": false
+                },
+                {
+                    "name": "tipo",
+                    "type": "AMAZON.AlphaNumeric",
+                    "prompt": "Lo desea con pasta dura o edicion cuero?",
+                    "required": true,
+                    "customType": false
+                },
+                {
+                    "name": "fin",
+                    "type": "AMAZON.AlphaNumeric",
+                    "prompt": "Su pedido ha sido registrado con exito, nuestro equipo se comunicara con usted para programar la entrega, gracias.",
+                    "required": true,
+                    "customType": false
+                }
+            ],
+            "utterances": [
+                "nuevo producto",
+                "album fisico",
+                "album personalizado",
+                "solicitar nuevo producto"
+            ],
+            "intentName": "album_personalizado",
+            "newSlotTypes": []
+        },
+        {
+            "slots": [
+                {
+                    "name": "soporteFoto",
+                    "type": "AMAZON.AlphaNumeric",
+                    "prompt": "cual es su nombre de usuario?",
+                    "required": true,
+                    "customType": false
+                },
+                {
+                    "name": "subirFoto",
+                    "type": "AMAZON.AlphaNumeric",
+                    "prompt": "el problema es al subir nueva foto de perfil u otra foto?",
+                    "required": true,
+                    "customType": false
+                },
+                {
+                    "name": "dateFoto",
+                    "type": "AMAZON.DATE",
+                    "prompt": "desde cuando esta presentando el problema?",
+                    "required": true,
+                    "customType": false
+                },
+                {
+                    "name": "resultFoto",
+                    "type": "AMAZON.AlphaNumeric",
+                    "prompt": "Podria iniciar sesion nuevamente por favor si el problema persiste comunicarse al numero +502 22489562 para una asitencia personalizada, gracias",
+                    "required": true,
+                    "customType": false
+                }
+            ],
+            "utterances": [
+                "problema con la foto",
+                "ayuda en fotos",
+                "error",
+                "ayuda"
+            ],
+            "intentName": "soporte_fotos",
+            "newSlotTypes": []
+        }
+    ],
+    "outputVoice": false,
+    "sessionTimeout": 5,
+    "coppa": false
+}

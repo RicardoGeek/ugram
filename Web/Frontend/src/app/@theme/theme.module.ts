@@ -48,6 +48,7 @@ import { DialogComponent } from './components/dialogs/dialog/dialog.component';
 import { EditUserComponent } from './components/dialogs/edit-user/edit-user.component';
 import { FormsModule } from '@angular/forms';
 import { TranslateComponent } from './components/dialogs/translate/translate.component';
+import { ChatBotComponent } from './components/dialogs/chat-bot/chat-bot.component';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -77,7 +78,8 @@ const COMPONENTS = [
   TwoColumnsLayoutComponent,
   DialogComponent,
   EditUserComponent,
-  TranslateComponent
+  TranslateComponent,
+  ChatBotComponent
 ];
 const PIPES = [
   CapitalizePipe,
@@ -91,7 +93,7 @@ const PIPES = [
   imports: [CommonModule, MatRippleModule, ...NB_MODULES],
   exports: [CommonModule, MatRippleModule, ...PIPES, ...COMPONENTS],
   declarations: [...COMPONENTS, ...PIPES ],
-  entryComponents: [DialogComponent , EditUserComponent, TranslateComponent]
+  entryComponents: [DialogComponent , EditUserComponent, TranslateComponent, ChatBotComponent]
 })
 export class ThemeModule {
   static forRoot(): ModuleWithProviders<ThemeModule> {

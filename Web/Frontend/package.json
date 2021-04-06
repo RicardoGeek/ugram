@@ -49,6 +49,7 @@
     "@swimlane/ngx-charts": "^13.0.2",
     "ack-angular-webcam": "^1.10.0",
     "angular2-chartjs": "0.4.1",
+    "aws-amplify": "^3.3.26",
     "bootstrap": "4.3.1",
     "chart.js": "2.7.1",
     "ckeditor": "4.7.3",

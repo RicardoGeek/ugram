@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { NbDialogService } from "@nebular/theme";
 import { WebCamComponent } from "ack-angular-webcam";
+import { ChatBotComponent } from "../../../@theme/components/dialogs/chat-bot/chat-bot.component";
 import { DialogComponent } from "../../../@theme/components/dialogs/dialog/dialog.component";
 import { User } from "../../../models/user";
 import { UserService } from "../../../services/user.service";
@@ -86,5 +87,9 @@ export class LoginComponent {
 
   changeMode(){
     this.loginMode = !this.loginMode;
+  }
+
+  openChat(){
+    this.dialogService.open(ChatBotComponent);
   }
 }

@@ -1,0 +1,12 @@
+<nb-card>
+  <nb-card-header>Chat</nb-card-header>
+  <nb-card-body>
+    <div class="content">
+      <textarea style="width: 500px; height: 300px;" nbInput fullWidth readonly placeholder="Bienvenido" [(ngModel)]="text"></textarea>
+      <br>
+      <input type="text" nbInput fullWidth fieldSize="small"  [(ngModel)]="message" >
+      <br>
+      <button nbButton status="success" (click)="send()">Enviar</button>
+    </div>
+  </nb-card-body>
+</nb-card>
