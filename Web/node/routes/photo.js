@@ -9,5 +9,6 @@ app.get('/:id_user', photoController.getUserPhotos)
 app.get('/:id_user/:id_album', photoController.getUserPhotosByAlbum)
 app.delete('/:id_photo', photoController.deletePhoto)
 app.post('/tag', photoController.tagPhoto)
+app.post('/getText', photoController.detectText)
 
 module.exports = app;

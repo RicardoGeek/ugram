@@ -6,6 +6,35 @@ const dynamo = new AWS.DynamoDB.DocumentClient(aws_keys.dynamodb);
 const rekognition = new AWS.Rekognition(aws_keys.rekognition);
 const s3Bucket = 'bucket-imagenes-practica1';
 
+
+exports.detectText = async (req, res) => {
+    let image = req.body.foto;
+
+    let params = {
+        Image: {
+            S3Object: {
+                Bucket: s3Bucket,
+                Name: image
+            }
+        },
+
+    }
+
+    rekognition.detectText(params, (err, data) => {
+        if (err) {
+            res.status(500).send({
+                'status': 'error',
+                'message': err
+            })
+        } else {
+            res.status(200).send({
+                'status': 'success',
+                'message': data.TextDetections
+            })
+        }
+
+    })
+}
 exports.tagPhoto = async (req, res) => {
     let body = req.body
     const s3Photo = body.photo
@@ -21,7 +50,7 @@ exports.tagPhoto = async (req, res) => {
     }
 
     rekognition.detectLabels(rekognitionParams, (rekognitionError, response) => {
-        if(rekognitionError) {
+        if (rekognitionError) {
             res.status(500).send({
                 'status': 'error',
                 'message': rekognitionError
@@ -30,7 +59,7 @@ exports.tagPhoto = async (req, res) => {
 
         const labels = response.Labels
         const tags = []
-        for(labelIdx in labels) {
+        for (labelIdx in labels) {
             const label = labels[labelIdx]
             if (label.Confidence > 80) {
                 tags.push(label.Name)
