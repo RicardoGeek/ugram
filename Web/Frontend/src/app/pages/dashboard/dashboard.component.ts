@@ -1,3 +1,4 @@
+import { TextPhotosComponent } from "./../../@theme/components/dialogs/text-photos/text-photos.component";
 import { Component, OnInit } from "@angular/core";
 import { NbDialogService } from "@nebular/theme";
 import { environment } from "../../../environments/environment";
@@ -59,16 +60,13 @@ export class DashboardComponent implements OnInit {
       this.photosService
         .getUserPhotos(this.user.user_name)
         .subscribe((responsePhotos) => {
-
           if (responsePhotos.message.Items) {
-
             const grouped = this.groupBy(
               this.parsePhotos(responsePhotos.message.Items),
               (photo) => photo.id_album
             );
             this.photosArray = [...grouped];
           } else {
-
             const grouped = this.groupBy(
               this.parsePhotos(responsePhotos.message),
               (photo) => photo.id_album
@@ -79,15 +77,15 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  parsePhotos(items:[]) {
+  parsePhotos(items: []) {
     let resultIems = [];
-    items.forEach((data:any)=>{
+    items.forEach((data: any) => {
       if (data.id_album.includes("Default")) {
         resultIems.push(data);
-      } else{
+      } else {
         let tagAlbums = data.tags.split(",");
 
-        tagAlbums.forEach(element => {
+        tagAlbums.forEach((element) => {
           let newData = {
             caption: data.caption,
             id_album: element,
@@ -95,14 +93,12 @@ export class DashboardComponent implements OnInit {
             id_user: data.id_user,
             name: data.name,
             tags: data.tags,
-            url: data.url
-          }
+            url: data.url,
+          };
 
           resultIems.push(newData);
         });
       }
-
-
     });
 
     return resultIems;
@@ -240,7 +236,15 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  openChat(){
+  openChat() {
     this.dialogService.open(ChatBotComponent);
+  }
+
+  openText(url: string) {
+    this.photosService.getText(url).subscribe((data) => {
+      this.dialogService.open(TextPhotosComponent, {
+        context: { texts: data.message },
+      });
+    });
   }
 }

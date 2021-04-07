@@ -1,0 +1,10 @@
+<nb-card>
+  <nb-card-header>Letras en la Imagen</nb-card-header>
+  <nb-card-body>
+    <nb-list>
+      <nb-list-item *ngFor="let text of texts">
+        {{ text.DetectedText}}
+      </nb-list-item>
+    </nb-list>
+  </nb-card-body>
+</nb-card>

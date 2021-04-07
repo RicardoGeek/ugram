@@ -56,4 +56,8 @@ export class PhotoService {
   tagPhoto(idPhoto): Observable<any>{
     return this.http.post(this.baseUrl + '/photos/tag', {photo: idPhoto}, this.httpOptions());
   }
+
+  getText(url: string): Observable<any>{
+    return this.http.post(this.baseUrl + '/photos/getText', {foto: url}, this.httpOptions());
+  }
 }

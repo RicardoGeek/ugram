@@ -16,6 +16,7 @@ import {
   NbThemeModule,
   NbCardModule,
   NbInputModule,
+  NbListModule,
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { NbSecurityModule } from '@nebular/security';
@@ -50,6 +51,7 @@ import { EditUserComponent } from './components/dialogs/edit-user/edit-user.comp
 import { FormsModule } from '@angular/forms';
 import { TranslateComponent } from './components/dialogs/translate/translate.component';
 import { ChatBotComponent } from './components/dialogs/chat-bot/chat-bot.component';
+import { TextPhotosComponent } from './components/dialogs/text-photos/text-photos.component';
 
 
 const NB_MODULES = [
@@ -67,7 +69,8 @@ const NB_MODULES = [
   NbEvaIconsModule,
   NbCardModule,
   FormsModule,
-  NbInputModule
+  NbInputModule,
+  NbListModule
 ];
 const COMPONENTS = [
   SwitcherComponent,
@@ -81,7 +84,8 @@ const COMPONENTS = [
   DialogComponent,
   EditUserComponent,
   TranslateComponent,
-  ChatBotComponent
+  ChatBotComponent,
+  TextPhotosComponent
 ];
 const PIPES = [
   CapitalizePipe,
@@ -97,7 +101,7 @@ const PIPES = [
   imports: [CommonModule, MatRippleModule, ...NB_MODULES],
   exports: [CommonModule, MatRippleModule, ...PIPES, ...COMPONENTS],
   declarations: [...COMPONENTS, ...PIPES ],
-  entryComponents: [DialogComponent , EditUserComponent, TranslateComponent, ChatBotComponent]
+  entryComponents: [DialogComponent , EditUserComponent, TranslateComponent, ChatBotComponent, TextPhotosComponent]
 })
 export class ThemeModule {
   static forRoot(): ModuleWithProviders<ThemeModule> {
