@@ -98,3 +98,31 @@ Luego de forma similar configurar el nginx y el daemon
 se crearon diferentes usuarios para poder acceder a los diferentes servicios de Aws tanto en administracion como en comunicacion de backends.
 
 ![users](https://github.com/RicardoGeek/ugram/blob/main/docs/users1.PNG)
+
+## Amazon Rekognition
+
+Se agregaron feature de inteligencia artificial para el tratamiento de imagenes y autenticacion por rostro.
+
+![users](https://github.com/RicardoGeek/ugram/blob/main/docs/photo-auth.PNG)
+
+Para esto se utlizio el face comparsion de Rekognition
+
+Ademas se agregaron etiquetas a las imagenes y los albunes ahora son dinamicamente generados por esas etiquetas
+
+## Chat
+
+Se configuraron 3 opciones de chat en amazon Lex para reconocer los intents.
+
+![users](https://github.com/RicardoGeek/ugram/blob/main/docs/intents.PNG)
+
+Y para cada intent se configuraron las siguientes respuestas
+
+![users](https://github.com/RicardoGeek/ugram/blob/main/docs/intent-1.PNG)
+
+![users](https://github.com/RicardoGeek/ugram/blob/main/docs/intent-2.PNG)
+
+![users](https://github.com/RicardoGeek/ugram/blob/main/docs/intent3.PNG)
+
+## Translate
+
+Se agregaron servicios de traduccion a las descripciones de las paginas con multiples idiomas.
